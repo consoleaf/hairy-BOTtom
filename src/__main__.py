@@ -78,7 +78,7 @@ class MyClient(discord.Client):
         new_lvl = int(math.log10(user.char_count - 5))
         orm.commit()
 
-        print("{0} characters total. Level: {0}".format(user.char_count, new_lvl))
+        print("{0} characters total. Level: {1}".format(user.char_count, new_lvl))
 
         if prev_lvl != new_lvl:
             return new_lvl
