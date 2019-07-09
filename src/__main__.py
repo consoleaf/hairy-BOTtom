@@ -60,7 +60,8 @@ class MyClient(discord.Client):
             embed.set_image(url=url)
             await message.channel.send(embed=embed)
         if data[1].lower() == "thirst":
-            await message.channel.send("Ya naughty!")
+            embed = discord.Embed(title="Ya naughty!")
+            await message.channel.send(embed=embed)
 
     @orm.db_session
     def count_chars(self, message):
