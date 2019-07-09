@@ -59,6 +59,8 @@ class MyClient(discord.Client):
             embed = discord.Embed(title="Cat pic for ya! {emoji}".format(emoji=emoji))
             embed.set_image(url=url)
             await message.channel.send(embed=embed)
+        if data[1].lower() == "thirst":
+            await message.channel.send("Ya naughty!")
 
     @orm.db_session
     def count_chars(self, message):
@@ -71,9 +73,12 @@ class MyClient(discord.Client):
         user.char_count += min(len(message.content), 100)
         if user.uid == "373594474154033153" and user.char_count > 20:
             prev_lvl = 1
-            user.char_count = 7
+            user.char_count = 10
         new_lvl = int(math.log10(user.char_count - 5))
         orm.commit()
+
+        print("{0} characters total. Level: {0}".format(user.char_count, new_lvl))
+
         if prev_lvl != new_lvl:
             return new_lvl
         return None
