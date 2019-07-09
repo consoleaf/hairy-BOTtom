@@ -55,7 +55,7 @@ class MyClient(discord.Client):
                 url = json.loads(resp.read())["file"]
             emoji = ":heart_eyes_cat:"
             if message.guild.id == 569460226676228096:
-                emoji = ":nyvenaWelp:"
+                emoji = ":CatRee:"
             embed = discord.Embed(title="Cat pic for ya! {emoji}".format(emoji=emoji))
             embed.set_image(url=url)
             await message.channel.send(embed=embed)
@@ -66,10 +66,10 @@ class MyClient(discord.Client):
         if user is None:
             user = User(uid=str(message.author.id), char_count=0)
         prev_lvl = 0
-        if user.char_count > 0:
-            prev_lvl = int(math.log10(user.char_count))
+        if user.char_count - 5 > 0:
+            prev_lvl = int(math.log10(user.char_count - 5))
         user.char_count += min(len(message.content), 100)
-        new_lvl = int(math.log10(user.char_count))
+        new_lvl = int(math.log10(user.char_count - 5))
         orm.commit()
         if prev_lvl != new_lvl:
             return new_lvl
