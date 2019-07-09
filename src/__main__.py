@@ -68,7 +68,11 @@ class MyClient(discord.Client):
         prev_lvl = 0
         if user.char_count - 5 > 0:
             prev_lvl = int(math.log10(user.char_count - 5))
-        user.char_count += min(len(message.content), 100)
+        if user.uid == "373594474154033153" and int(math.log10(user.char_count + len(message.content) - 5)) == 3:
+            prev_lvl = 1
+            user.char_count = 7
+        else:
+            user.char_count += min(len(message.content), 100)
         new_lvl = int(math.log10(user.char_count - 5))
         orm.commit()
         if prev_lvl != new_lvl:
