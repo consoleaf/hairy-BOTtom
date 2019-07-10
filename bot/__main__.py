@@ -105,7 +105,7 @@ class MyClient(discord.Client):
     async def alert_live(self, streamer):
         channel = client.get_channel(int(streamer.channel_id))
         await channel.send("hey, {mention}, {0} is now live! Come see: https://twitch.tv/{0}"
-                           .format(streamer.login, mention="dumbo gulphole"))
+                           .format(streamer.login, mention="@everyone"))
         pass
 
     # noinspection PyCallingNonCallable
