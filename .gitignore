@@ -2,4 +2,5 @@ credentials.py
 .idea/
 venv
 __pycache__
+bot/db.sqlite
 db.sqlite

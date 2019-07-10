@@ -1,4 +1,5 @@
 import asyncio
+import os
 import json
 import sys
 import time
@@ -59,6 +60,17 @@ class MyClient(discord.Client):
             embed = discord.Embed(title="Cat pic for ya! {emoji}".format(emoji=emoji))
             embed.set_image(url=url)
             await message.channel.send(embed=embed)
+        if data[1].lower() == "dog":
+            url = "..gif"
+            while re.match(r".*\.(.+)", url)[1] == "gif":
+                resp = urllib.request.urlopen("http://aws.random.dog/woof")
+                url = json.loads(resp.read())["file"]
+            emoji = ":heart_eyes_cat:"
+            # if message.guild.id == 569460226676228096:
+            #     emoji = ":nyvenaWelp:"
+            embed = discord.Embed(title="Cat pic for ya! {emoji}".format(emoji=emoji))
+            embed.set_image(url=url)
+            await message.channel.send(embed=embed)
         if data[1].lower() == "thirst":
             embed = discord.Embed(title="Ya naughty!")
             await message.channel.send(embed=embed)
@@ -91,9 +103,9 @@ class MyClient(discord.Client):
         Streamer(login=streamer_name, channel_id=str(channel_id), guild_id=str(guild_id))
 
     async def alert_live(self, streamer):
-        channel = discord.utils.get(client.get_all_channels(), guild__id=streamer.guild_id, id=streamer.channel_id)
-        await channel.send("hey, {mention}, {0} is now live! Come see: https://twitch.tv/{0}".format(streamer.login,
-                                                                                                     mention="@everyone"))
+        channel = client.get_channel(int(streamer.channel_id))
+        await channel.send("hey, {mention}, {0} is now live! Come see: https://twitch.tv/{0}"
+                           .format(streamer.login, mention="dumbo gulphole"))
         pass
 
     # noinspection PyCallingNonCallable
@@ -164,7 +176,9 @@ client = MyClient()
 if __name__ == "__main__":
     try:
         # orm.set_sql_debug(True)
-        db.bind(provider="sqlite", filename="db.sqlite", create_db=True)
+        if os.path.exists("db.sqlite"):
+            os.rename("db.sqlite", os.path.join(os.getcwd(), "db.sqlite"))
+        db.bind(provider="sqlite", filename=os.path.join(os.getcwd(), "db.sqlite"), create_db=True)
         db.generate_mapping(create_tables=True)
 
         client.run(credentials.token)
