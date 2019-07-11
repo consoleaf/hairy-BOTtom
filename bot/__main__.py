@@ -4,6 +4,8 @@ import json
 import sys
 import time
 import threading
+from typing import Optional, Any
+
 import discord
 from discord.ext import tasks, commands
 import credentials
@@ -40,7 +42,8 @@ class MyClient(discord.Client):
         print("Message from {0.author}: {0.content}.".format(message))
         level = self.count_chars(message)
         if level:
-            await message.channel.send("{0}, you meowed your way up to level {1}!".format(message.author.mention, level))
+            await message.channel.send(
+                "{0}, you meowed your way up to level {1}!".format(message.author.mention, level))
 
     async def command(self, message):
         data = re.match(r"!([^ ]+)(.*)", message.content)
@@ -72,6 +75,8 @@ class MyClient(discord.Client):
         if data[1].lower() == "thirst":
             embed = discord.Embed(title="Ya naughty!")
             await message.channel.send(embed=embed)
+        if data[1].lower() in ["level", "lvl"]:
+            await self.lvl_command(message)
 
     @orm.db_session
     def count_chars(self, message):
@@ -155,6 +160,16 @@ class MyClient(discord.Client):
     @discord_check.after_loop
     async def after_discord_checker(self):
         print("Stopping discord checker...")
+
+    @orm.db_session
+    async def lvl_command(self, message):
+        user: User = orm.select(u for u in User if u.uid == str(message.author.id)).first()
+        cur_exp = user.char_count
+        cur_level = int(math.log10(user.char_count - 5))
+        max_exp = 10 ** (cur_level + 1) + 5
+        cur_exp = int(cur_exp / max_exp * 100)
+        await message.channel.send(
+            "{message.author.mention}, you current level is: {cur_level}.\nEXP: {cur_exp}%".format(message=message, cur_level=cur_level, cur_exp=cur_exp))
 
 
 class User(db.Entity):
