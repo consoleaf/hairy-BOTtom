@@ -1,11 +1,6 @@
-import asyncio
 import os
 import json
 import sys
-import time
-import threading
-from typing import Optional, Any
-
 import discord
 from discord.ext import tasks, commands
 import credentials
