@@ -40,7 +40,7 @@ class MyClient(discord.Client):
         print("Message from {0.author}: {0.content}.".format(message))
         level = self.count_chars(message)
         if level:
-            await message.channel.send("{0}, you leveled up to level {1}!".format(message.author.mention, level))
+            await message.channel.send("{0}, you meowed your way up to level {1}!".format(message.author.mention, level))
 
     async def command(self, message):
         data = re.match(r"!([^ ]+)(.*)", message.content)
