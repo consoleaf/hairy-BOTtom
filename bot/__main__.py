@@ -51,8 +51,8 @@ class MyClient(discord.Client):
             return
         if data[1].lower() == "cat":
             url = "..gif"
-            while re.match(r".*\.(.+)", url)[1] == "gif":
-                resp = urllib.request.urlopen("http://aws.random.cat/meow")
+            while re.match(r".*\.(.+)", url)[1].lower() == "gif":
+                resp = urllib.request.urlopen("https://aws.random.cat/meow")
                 url = json.loads(resp.read())["file"]
             emoji = ":heart_eyes_cat:"
             # if message.guild.id == 569460226676228096:
@@ -62,13 +62,11 @@ class MyClient(discord.Client):
             await message.channel.send(embed=embed)
         if data[1].lower() == "dog":
             url = "..gif"
-            while re.match(r".*\.(.+)", url)[1] == "gif":
-                resp = urllib.request.urlopen("http://aws.random.dog/woof")
-                url = json.loads(resp.read())["file"]
-            emoji = ":heart_eyes_cat:"
-            # if message.guild.id == 569460226676228096:
-            #     emoji = ":nyvenaWelp:"
-            embed = discord.Embed(title="Cat pic for ya! {emoji}".format(emoji=emoji))
+            while re.match(r".*\.(.+)", url)[1].lower() in ["gif", "mp4"]:
+                resp = urllib.request.urlopen("https://random.dog/woof")
+                url = "http://random.dog/" + resp.read().decode("utf8")
+            emoji = ""
+            embed = discord.Embed(title="Dog pic for ya! {emoji}".format(emoji=emoji))
             embed.set_image(url=url)
             await message.channel.send(embed=embed)
         if data[1].lower() == "thirst":
