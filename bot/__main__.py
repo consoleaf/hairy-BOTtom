@@ -103,7 +103,7 @@ class MyClient(discord.Client):
     async def alert_live(self, streamer):
         channel = client.get_channel(int(streamer.channel_id))
         await channel.send("hey, {mention}, {0} is now live! Come see: https://twitch.tv/{0}"
-                           .format(streamer.login, mention="@everyone"))
+                           .format(streamer.login, mention="@children"))
         pass
 
     # noinspection PyCallingNonCallable
@@ -137,7 +137,8 @@ class MyClient(discord.Client):
             for streamer in get_streamers():
                 print("Checking {0}...".format(streamer.login))
                 headers = {
-                    "Client-ID": "7i5krka1pcikxak6y74sk77fpmj89y"
+                    "Client-ID": "gp762nuuoqcoxypju8c569th9wz7q5",
+                    "Authorization": "Bearer i403osnushgwz8y43w4ftlvjg4s3ju"
                 }
                 url = "https://api.twitch.tv/helix/streams?user_login={0.login}&first=1".format(streamer)
                 req = urllib.request.Request(url, headers=headers)
